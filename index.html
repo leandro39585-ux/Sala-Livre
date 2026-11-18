@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SalaLivre</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<meta name="theme-color" content="#16a34a">
+<style>
+:root{--bg:#fbf6ee;--card:#fff;--ink:#17152e;--mut:#7b7794;--line:#efe8db;--g:#16a34a;--g2:#4ade80;--v:#7c3aed;--v2:#c4b5fd;--a:#f59e0b;--r:#ef4444;--s:#0ea5e9;--sh:0 10px 30px rgba(60,40,10,.08);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#12101f;--card:#1c1a30;--ink:#f6f3ff;--mut:#a29fbd;--line:#2a2745;--sh:0 10px 30px rgba(0,0,0,.4)}}
+:root[data-theme=dark]{--bg:#12101f;--card:#1c1a30;--ink:#f6f3ff;--mut:#a29fbd;--line:#2a2745;--sh:0 10px 30px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{font-family:"Plus Jakarta Sans",Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+#splash{position:fixed;inset:0;z-index:99;background:#14112b;display:grid;place-items:center;color:#fff;text-align:center;overflow:hidden;transition:opacity .6s,visibility .6s}
+#splash.off{opacity:0;visibility:hidden}
+#splash:before,#splash:after{content:"";position:absolute;width:340px;height:340px;border-radius:50%;filter:blur(70px);animation:bl 4s ease-in-out infinite alternate}
+#splash:before{background:#22c55e;top:-80px;left:-80px;opacity:.55}#splash:after{background:#7c3aed;bottom:-80px;right:-80px;opacity:.7}
+@keyframes bl{to{transform:translate(40px,30px) scale(1.2)}}
+#splash>div{position:relative;z-index:1}
+.lg{width:92px;height:92px;border-radius:30px;background:linear-gradient(135deg,#22c55e,#16a34a);display:grid;place-items:center;margin:0 auto 18px;animation:pop .9s cubic-bezier(.2,1.4,.4,1) both;box-shadow:0 20px 50px rgba(34,197,94,.45)}
+#splash h1{font-size:36px;letter-spacing:-1.5px;animation:up .8s .3s both}#splash p{opacity:.7;margin-top:6px;animation:up .8s .5s both}
+@keyframes pop{from{transform:scale(.2) rotate(-25deg);opacity:0}}@keyframes up{from{transform:translateY(16px);opacity:0}}
+#splash{transition:opacity .7s,visibility .7s,transform .7s}#splash.off{transform:scale(1.18)}
+#splash>.rings,#splash>.sp{position:absolute;left:50%;top:calc(50% - 70px);width:0;height:0;pointer-events:none}
+.rings i{position:absolute;left:-60px;top:-60px;width:120px;height:120px;border-radius:50%;border:2px solid #4ade80;opacity:0;animation:rg 3.2s ease-out infinite}.rings i:nth-child(2){border-color:#a78bfa;animation-delay:1s}.rings i:nth-child(3){border-color:#fbbf24;animation-delay:2s}
+@keyframes rg{0%{transform:scale(.6);opacity:.9}100%{transform:scale(5);opacity:0}}
+.sp b{position:absolute;border-radius:50%;opacity:0;animation:bs 1.4s cubic-bezier(.1,.8,.3,1) both}
+@keyframes bs{0%{transform:translate(0,0) scale(0);opacity:1}100%{transform:translate(var(--x),var(--y)) scale(1);opacity:0}}
+#splash .lg{width:110px;height:110px;border-radius:36px;position:relative;animation:lgin 1.2s .1s cubic-bezier(.2,1.3,.3,1) both,fl 3.2s 1.4s ease-in-out infinite}
+#splash .lg:before{content:"";position:absolute;inset:-8px;border-radius:42px;border:3px solid #4ade80;opacity:0;animation:ping 1.6s 1s ease-out 2}
+@keyframes lgin{0%{transform:scale(0) rotate(-200deg);opacity:0}60%{opacity:1}100%{transform:none;opacity:1}}
+@keyframes fl{50%{transform:translateY(-10px) rotate(3deg)}}
+@keyframes ping{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+#splash .lg path{transform-box:fill-box;transform-origin:center;animation:pp .8s both}#splash .lg path:nth-child(1){animation-delay:.7s}#splash .lg path:nth-child(2){animation-delay:.95s}#splash .lg path:nth-child(3){animation:none}
+@keyframes pp{from{transform:translateY(-30px) scale(.4);opacity:0}}
+#splash h1{font-size:46px;letter-spacing:-2px;animation:none;margin-top:4px}#sh span{display:inline-block;animation:lt .8s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes lt{from{transform:translateY(50px) rotate(14deg) scale(.4);opacity:0}}
+#splash .sub{animation:up .8s 2s both}
+.ent{max-height:0;opacity:0;overflow:hidden;transition:max-height .8s,opacity .6s,margin .6s;display:flex;flex-direction:column;align-items:center;gap:10px}
+#splash.ent-on .ent{max-height:340px;opacity:1;margin-top:28px}
+.ent span{font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;opacity:.6;margin-bottom:2px}
+.eb{width:270px;display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:20px;background:var(--c);color:#fff;font-weight:800;font-size:16px;box-shadow:0 12px 30px color-mix(in srgb,var(--c) 55%,transparent);opacity:0;text-align:left;transition:transform .15s}.eb:active{transform:scale(.94)}.eb small{margin-left:auto;font-size:20px}
+#splash.ent-on .eb{animation:eb .7s var(--d) cubic-bezier(.2,1.5,.4,1) both}
+@keyframes eb{from{transform:translateY(40px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:12px;padding:12px 16px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px)}
+.ib{width:44px;height:44px;border-radius:16px;background:var(--card);box-shadow:var(--sh);display:grid;place-items:center;transition:transform .15s}.ib:active{transform:scale(.88)}
+header h2{font-size:20px;letter-spacing:-.6px;flex:1}
+.av{width:44px;height:44px;border-radius:16px;background:var(--rc,var(--v));color:#fff;display:grid;place-items:center;font-weight:800;position:relative}
+.dot{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:var(--r);font-size:11px;display:grid;place-items:center;border:2px solid var(--bg)}
+main{max-width:760px;margin:auto;padding:8px 16px 50px}
+.view{animation:fade .35s}@keyframes fade{from{opacity:0;transform:translateY(10px)}}
+.hero{background:#17152e;color:#fff;border-radius:30px;padding:24px;margin-bottom:16px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-40px;top:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(#7c3aed,transparent 70%);opacity:.8}
+.hero h3{font-size:26px;letter-spacing:-1px;position:relative;z-index:1}.hero p{opacity:.7;margin:4px 0 16px;font-size:14px;position:relative;z-index:1}
+.pills{display:flex;gap:8px;position:relative;z-index:1;flex-wrap:wrap}.pl{padding:8px 14px;border-radius:99px;font-weight:700;font-size:13px}.pl.g{background:#22c55e;color:#06290f}.pl.v{background:#c4b5fd;color:#2a1070}.pl.a{background:#fbbf24;color:#3a2600}
+.lbl{font-size:12px;font-weight:800;color:var(--mut);text-transform:uppercase;letter-spacing:1px;margin:16px 2px 8px}
+.seg{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.seg::-webkit-scrollbar{display:none}
+.chip{padding:10px 16px;border-radius:16px;background:var(--card);border:2px solid transparent;font-size:13.5px;font-weight:700;white-space:nowrap;transition:.2s;box-shadow:var(--sh)}
+.chip.on{background:var(--ink);color:var(--bg)}.chip.pg.on{background:var(--g);color:#fff}.chip:active{transform:scale(.93)}
+.card{background:var(--card);border-radius:26px;padding:14px;box-shadow:var(--sh);margin-bottom:12px;display:flex;gap:14px;align-items:center;animation:fade .4s both;transition:transform .2s}
+.card:active{transform:scale(.98)}
+.rb{width:64px;height:64px;border-radius:20px;background:var(--bc);color:var(--fc);display:grid;place-items:center;font-weight:800;font-size:16px;flex:none;letter-spacing:-.5px}
+.card h4{font-size:16px;letter-spacing:-.3px}.card small{color:var(--mut);font-size:13px;display:block;margin-top:2px}.grow{flex:1;min-width:0}
+.tag{display:inline-block;padding:4px 10px;border-radius:99px;font-size:11.5px;font-weight:800;margin-top:7px}
+.t-free{background:#dcfce7;color:#15803d}.t-oc{background:#ede9fe;color:#6d28d9}.t-bl{background:#fee2e2;color:#b91c1c}.t-rs{background:#fef3c7;color:#b45309}
+.btn{padding:12px 18px;border-radius:16px;background:var(--g);color:#fff;font-weight:800;font-size:14px;box-shadow:0 8px 0 -2px rgba(0,0,0,.0),0 10px 22px rgba(22,163,74,.35);transition:.15s;white-space:nowrap}
+.btn:active{transform:translateY(2px) scale(.95)}.btn.g{background:var(--line);color:var(--ink);box-shadow:none}.btn.r{background:var(--r);box-shadow:0 10px 22px rgba(239,68,68,.35)}.btn.a{background:var(--a);color:#3a2600;box-shadow:0 10px 22px rgba(245,158,11,.4)}.btn.v{background:var(--v);box-shadow:0 10px 22px rgba(124,58,237,.35)}
+.btn:disabled{background:var(--line);color:var(--mut);box-shadow:none}
+.cap{display:flex;gap:3px;margin-top:6px}.cap i{width:6px;height:6px;border-radius:50%;background:var(--line)}.cap i.f{background:var(--g2)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.map{border-radius:26px;padding:16px;color:#fff;animation:fade .4s both;min-height:112px;display:flex;flex-direction:column;justify-content:space-between;font-weight:800;font-size:17px;letter-spacing:-.4px}
+.map span{font-weight:600;font-size:12.5px;opacity:.9;letter-spacing:0}
+.m-free{background:linear-gradient(135deg,#16a34a,#4ade80)}.m-oc{background:linear-gradient(135deg,#7c3aed,#a78bfa)}.m-bl{background:linear-gradient(135deg,#dc2626,#fb7185)}.m-rs{background:linear-gradient(135deg,#d97706,#fbbf24)}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.st div{border-radius:24px;padding:16px;color:#fff}.st b{font-size:34px;display:block;letter-spacing:-1.5px}.st span{font-size:12px;font-weight:700;opacity:.9}
+.donut{width:130px;height:130px;border-radius:50%;flex:none;display:grid;place-items:center}.donut:after{content:attr(data-t);width:90px;height:90px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:800;font-size:22px}
+.bar{display:flex;align-items:center;gap:10px;margin:12px 0;font-size:13px;font-weight:700}.bar i{display:block;height:14px;border-radius:9px;background:var(--bg2);width:0;transition:width 1s cubic-bezier(.2,.8,.2,1)}.bar em{width:34px;font-style:normal;color:var(--mut)}
+.empty{text-align:center;color:var(--mut);padding:44px 10px;font-weight:600}.empty b{display:block;font-size:42px;margin-bottom:8px}
+#ov{position:fixed;inset:0;background:rgba(15,10,35,.55);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:.3s;z-index:40}#ov.on{opacity:1;visibility:visible}
+#dr{position:fixed;top:0;bottom:0;left:0;width:300px;max-width:86%;background:var(--card);z-index:41;transform:translateX(-105%);transition:transform .4s cubic-bezier(.2,.9,.2,1);padding:calc(22px + env(safe-area-inset-top,0px)) 16px 20px;display:flex;flex-direction:column;gap:6px;border-radius:0 32px 32px 0;box-shadow:var(--sh)}#dr.on{transform:none}
+.nv{display:flex;align-items:center;gap:14px;padding:14px;border-radius:18px;font-weight:700;font-size:15px;text-align:left;transition:.2s;color:var(--mut)}.nv span{width:34px;height:34px;border-radius:12px;background:var(--line);display:grid;place-items:center}
+.nv.on{background:var(--ink);color:var(--bg)}.nv.on span{background:var(--g);color:#fff}.nv:active{transform:scale(.96)}
+.dh{display:flex;align-items:center;gap:12px;margin:0 6px 16px}.dh .lg{width:48px;height:48px;border-radius:16px;margin:0;animation:none;box-shadow:none}.dh b{font-size:20px;letter-spacing:-.7px}.dh small{display:block;color:var(--mut);font-size:11px;font-weight:600}
+.roles{margin-top:auto;display:flex;flex-direction:column;gap:6px}.roles p{font-size:11px;font-weight:800;color:var(--mut);margin:0 6px;text-transform:uppercase;letter-spacing:1px}
+.rl{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:16px;font-weight:700;font-size:14px;border:2px solid var(--line)}.rl i{width:12px;height:12px;border-radius:50%;background:var(--c)}.rl.on{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+#md{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-radius:32px 32px 0 0;padding:26px 20px calc(24px + env(safe-area-inset-bottom,0px));transform:translateY(105%);transition:transform .4s cubic-bezier(.2,.9,.2,1);max-width:560px;margin:auto}#md.on{transform:none}
+#md h3{font-size:22px;letter-spacing:-.7px;margin-bottom:6px}#md p{color:var(--mut);font-size:14px;margin-bottom:16px;font-weight:600}.row{display:flex;gap:10px;margin-top:14px}.row .btn{flex:1;padding:15px}
+#toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,120px);background:var(--ink);color:var(--bg);padding:14px 22px;border-radius:18px;font-weight:700;font-size:14px;z-index:60;transition:transform .4s cubic-bezier(.2,1.2,.4,1);white-space:nowrap}#toast.on{transform:translate(-50%,0)}
+.nt{border-left:6px solid var(--c)}
+</style>
+</head>
+<body>
+<div id="splash"><div class="rings"><i></i><i></i><i></i></div><div class="sp" id="sp"></div><div class="stage"><div class="lg"><svg width="52" height="52" viewBox="0 0 56 56" fill="none"><path d="M28 8 4 20l24 12 24-12L28 8Z" fill="#fff"/><path d="M14 27v10c0 4 6 8 14 8s14-4 14-8V27l-14 7-14-7Z" fill="#dcfce7"/><path d="M52 20v16" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></div><h1 id="sh"></h1><p class="sub">Escola Secundária Monserrate</p><div class="ent"><span>Entrar como</span><button class="eb" style="--c:#16a34a;--d:.1s" data-a="enter" data-v="prof">Professor<small>→</small></button><button class="eb" style="--c:#d97706;--d:.25s" data-a="enter" data-v="func">Funcionário<small>→</small></button><button class="eb" style="--c:#7c3aed;--d:.4s" data-a="enter" data-v="adm">Administrador<small>→</small></button></div></div></div>
+<header><button class="ib" data-a="menu" aria-label="Menu"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M4 7h16M4 12h10M4 17h16"/></svg></button><h2 id="ttl"></h2><button class="ib" data-a="theme" aria-label="Tema">◐</button><div class="av" id="av"></div></header>
+<main id="mn"></main>
+<div id="ov" data-a="close"></div><nav id="dr"></nav><div id="md"></div><div id="toast"></div>
+<script>
+const SL=['08h30–10h00','10h15–11h45','14h00–15h30','15h45–17h15'],DAYS=['Seg','Ter','Qua','Qui','Sex'];
+const S={role:'prof',view:'search',cap:0,proj:false,slot:SL[2],day:'Ter',
+rooms:[{id:'A01',n:'Sala A01',c:30,p:1,s:'free'},{id:'A02',n:'Sala A02',c:24,p:1,s:'free'},{id:'A03',n:'Sala A03',c:20,p:0,s:'oc'},{id:'B01',n:'Sala B01',c:28,p:1,s:'free'},{id:'B02',n:'Sala B02',c:16,p:0,s:'free'},{id:'LAB',n:'Lab. Informática',c:26,p:1,s:'oc'},{id:'AUD',n:'Auditório',c:80,p:1,s:'free'},{id:'BIB',n:'Biblioteca',c:12,p:0,s:'free'}],
+res:[],iss:[],nt:[{t:'Bem-vindo à SalaLivre',d:'Sistema de gestão de salas ativo.',c:'#0ea5e9'}]};
+const R={prof:{n:'Professor',i:'P',c:'#16a34a',v:[['search','Procurar salas','⌕'],['mine','Minhas reservas','✓']]},func:{n:'Funcionário',i:'F',c:'#f59e0b',v:[['iss','Ocorrências','!']]},adm:{n:'Administrador',i:'A',c:'#7c3aed',v:[['map','Mapa de salas','▦'],['stats','Estatísticas','◔'],['not','Notificações','●']]}};
+const SC={free:['#dcfce7','#15803d','Livre','t-free'],oc:['#ede9fe','#6d28d9','Ocupada','t-oc'],bl:['#fee2e2','#b91c1c','Bloqueada','t-bl'],rs:['#fef3c7','#b45309','Em resolução','t-rs']};
+const $=s=>document.querySelector(s),cnt=k=>S.rooms.filter(r=>r.s==k).length;
+const tg=r=>`<span class="tag ${SC[r.s][3]}">${SC[r.s][2]}</span>`;
+const push=(t,d,c)=>S.nt.unshift({t,d,c});
+function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),2400)}
+function drawer(){const r=R[S.role];$('#dr').innerHTML=`<div class="dh"><div class="lg"><svg width="26" height="26" viewBox="0 0 56 56"><path d="M28 8 4 20l24 12 24-12L28 8Z" fill="#fff"/><path d="M14 27v10c0 4 6 8 14 8s14-4 14-8V27l-14 7-14-7Z" fill="#dcfce7"/></svg></div><div><b>SalaLivre</b><small>Escola Sec. Monserrate</small></div></div>`+r.v.map(v=>`<button class="nv ${S.view==v[0]?'on':''}" data-a="go" data-v="${v[0]}"><span>${v[2]}</span>${v[1]}</button>`).join('')+`<div class="roles"><p>Mudar de perfil</p>`+Object.keys(R).map(k=>`<button class="rl ${S.role==k?'on':''}" style="--c:${R[k].c}" data-a="role" data-v="${k}"><i></i>${R[k].n}</button>`).join('')+`</div>`}
+function room(r,i){const f=r.s=='free',sc=SC[r.s],dots=Array.from({length:6},(_,k)=>`<i class="${k<Math.ceil(r.c/15)?'f':''}"></i>`).join('');return `<div class="card" style="animation-delay:${i*50}ms"><div class="rb" style="--bc:${sc[0]};--fc:${sc[1]}">${r.id}</div><div class="grow"><h4>${r.n}</h4><small>${r.c} lugares · ${r.p?'📽 Projetor':'Sem projetor'}</small>${tg(r)}</div><button class="btn" ${f?'':'disabled'} data-a="res" data-v="${r.id}">${f?'Reservar':'Indisponível'}</button></div>`}
+const V={
+search(){const f=S.rooms.filter(r=>r.c>=S.cap&&(!S.proj||r.p));return `<div class="hero"><h3>Olá, professor 👋</h3><p>Que sala precisa hoje?</p><div class="pills"><span class="pl g">${cnt('free')} livres</span><span class="pl v">${cnt('oc')} ocupadas</span>${cnt('bl')+cnt('rs')?`<span class="pl a">${cnt('bl')+cnt('rs')} bloqueada</span>`:''}</div></div>
+<div class="lbl">Dia</div><div class="seg">${DAYS.map(d=>`<button class="chip ${S.day==d?'on':''}" data-a="day" data-v="${d}">${d}</button>`).join('')}</div>
+<div class="lbl">Horário</div><div class="seg">${SL.map(s=>`<button class="chip ${S.slot==s?'on':''}" data-a="slot" data-v="${s}">${s}</button>`).join('')}</div>
+<div class="lbl">Filtros</div><div class="seg">${[[0,'Todas'],[20,'20+ lugares'],[24,'24+ lugares'],[30,'30+ lugares']].map(c=>`<button class="chip ${S.cap==c[0]?'on':''}" data-a="cap" data-v="${c[0]}">${c[1]}</button>`).join('')}<button class="chip pg ${S.proj?'on':''}" data-a="proj">📽 Projetor</button></div>
+<div class="lbl">${f.length} salas</div>`+(f.length?f.map(room).join(''):'<div class="empty"><b>🔍</b>Nenhuma sala com estes filtros.</div>')},
+mine(){return (S.res.length?S.res.map(x=>{const r=S.rooms.find(a=>a.id==x.id),sc=SC[r.s];return `<div class="card"><div class="rb" style="--bc:${sc[0]};--fc:${sc[1]}">${r.id}</div><div class="grow"><h4>${r.n}</h4><small>${x.day} · ${x.slot}</small>${tg(r)}</div><button class="btn r" data-a="rep" data-v="${r.id}">Avaria</button></div>`}).join(''):'<div class="empty"><b>🗓️</b>Ainda não tem reservas.<br>Procure uma sala e reserve em dois toques.</div>')},
+iss(){return (S.iss.length?S.iss.map(x=>{const r=S.rooms.find(a=>a.id==x.id),sc=SC[r.s];return `<div class="card"><div class="rb" style="--bc:${sc[0]};--fc:${sc[1]}">${r.id}</div><div class="grow"><h4>${x.d}</h4><small>Comunicado por um professor</small>${tg(r)}</div>${x.st=='new'?`<button class="btn a" data-a="fix" data-v="${r.id}">Resolver</button>`:x.st=='wip'?`<button class="btn" data-a="done" data-v="${r.id}">Concluir</button>`:'<span class="tag t-free">Feito ✓</span>'}</div>`}).join(''):'<div class="empty"><b>✨</b>Sem ocorrências. Tudo a funcionar!</div>')},
+map(){return `<div class="grid">${S.rooms.map((r,i)=>`<div class="map m-${r.s}" style="animation-delay:${i*40}ms"><div>${r.n}<br><span>${r.c} lugares</span></div><span>● ${SC[r.s][2]}</span></div>`).join('')}</div>`},
+stats(){const f=cnt('free'),o=cnt('oc'),b=cnt('bl')+cnt('rs'),t=S.rooms.length,p1=f/t*100,p2=p1+o/t*100,d=[['Seg',62,'#16a34a'],['Ter',78,'#7c3aed'],['Qua',55,'#0ea5e9'],['Qui',84,'#f59e0b'],['Sex',47,'#ef4444']];return `<div class="st"><div style="background:#16a34a"><b>${f}</b><span>Livres</span></div><div style="background:#7c3aed"><b>${o}</b><span>Ocupadas</span></div><div style="background:#f59e0b"><b>${b}</b><span>Bloqueadas</span></div></div>
+<div class="lbl">Estado atual</div><div class="card"><div class="donut" data-t="${t}" style="background:conic-gradient(#16a34a 0 ${p1}%,#7c3aed ${p1}% ${p2}%,#f59e0b ${p2}% 100%)"></div><div class="grow"><h4>${S.res.length} reserva(s) hoje</h4><small>${S.iss.length} ocorrência(s) registada(s)</small></div></div>
+<div class="lbl">Ocupação semanal</div><div class="card" style="display:block">${d.map(x=>`<div class="bar"><em>${x[0]}</em><i data-w="${x[1]}" data-c="${x[2]}"></i><b>${x[1]}%</b></div>`).join('')}</div>`},
+not(){return S.nt.map(n=>`<div class="card nt" style="--c:${n.c}"><div class="grow"><h4>${n.t}</h4><small>${n.d}</small></div></div>`).join('')}};
+function render(){const r=R[S.role];if(!r.v.find(v=>v[0]==S.view))S.view=r.v[0][0];$('#ttl').textContent=r.v.find(v=>v[0]==S.view)[1];const a=$('#av');a.style.setProperty('--rc',r.c);a.innerHTML=r.i+(S.role=='adm'&&S.nt.length>1?`<span class="dot">${S.nt.length}</span>`:'');$('#mn').innerHTML=`<div class="view">${V[S.view]()}</div>`;drawer();setTimeout(()=>document.querySelectorAll('.bar i').forEach(e=>{e.style.background=e.dataset.c;e.style.width=e.dataset.w+'%'}),60)}
+function menu(o){$('#dr').classList.toggle('on',o);$('#ov').classList.toggle('on',o)}
+function modal(h){$('#md').innerHTML=h;$('#md').classList.add('on');$('#ov').classList.add('on')}
+function close(){$('#md').classList.remove('on');menu(false)}
+const st=(id,s)=>S.rooms.find(r=>r.id==id).s=s;
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v;
+if(a=='enter'){S.role=v;S.view=R[v].v[0][0];render();$('#splash').classList.add('off');return}
+if(a=='menu')menu(true);else if(a=='close')close();
+else if(a=='go'){S.view=v;menu(false);render()}
+else if(a=='role'){S.role=v;S.view=R[v].v[0][0];menu(false);render()}
+else if(a=='theme'){const d=document.documentElement,x=getComputedStyle(d).getPropertyValue('--bg').trim()=='#12101f';d.dataset.theme=x?'light':'dark'}
+else if(a=='cap'){S.cap=+v;render()}else if(a=='proj'){S.proj=!S.proj;render()}else if(a=='slot'){S.slot=v;render()}else if(a=='day'){S.day=v;render()}
+else if(a=='res'){const r=S.rooms.find(x=>x.id==v);modal(`<h3>Reservar ${r.n}?</h3><p>${S.day} · ${S.slot} · ${r.c} lugares${r.p?' · Projetor':''}</p><div class="row"><button class="btn g" data-a="close">Cancelar</button><button class="btn" data-a="ok" data-v="${v}">Confirmar reserva</button></div>`)}
+else if(a=='ok'){S.res.push({id:v,slot:S.slot,day:S.day});st(v,'oc');push('Nova reserva','Sala '+v+' reservada · '+S.day+' '+S.slot,'#16a34a');close();S.view='mine';render();toast('Reserva confirmada ✓')}
+else if(a=='rep'){modal(`<h3>Comunicar avaria</h3><p>Sala ${v} · O que se passa?</p><div class="seg"><button class="chip on">📽 Projetor avariado</button></div><div class="row"><button class="btn g" data-a="close">Cancelar</button><button class="btn r" data-a="sendrep" data-v="${v}">Enviar</button></div>`)}
+else if(a=='sendrep'){S.iss.push({id:v,d:'Projetor avariado',st:'new'});push('Avaria comunicada','Sala '+v+': projetor avariado.','#ef4444');close();render();toast('Avaria enviada ao funcionário')}
+else if(a=='fix'){S.iss.find(x=>x.id==v).st='wip';st(v,'rs');push('Em resolução','Sala '+v+' bloqueada para reparação.','#f59e0b');render();toast('Sala bloqueada · em resolução')}
+else if(a=='done'){S.iss.find(x=>x.id==v).st='ok';st(v,'free');push('Avaria resolvida','Sala '+v+' disponível novamente.','#16a34a');render();toast('Sala disponível ✓')}});
+(()=>{const h=$('#sh');'Sala'.split('').forEach((c,i)=>h.insertAdjacentHTML('beforeend',`<span style="animation-delay:${1+i*.09}s">${c}</span>`));'Livre'.split('').forEach((c,i)=>h.insertAdjacentHTML('beforeend',`<span style="color:#4ade80;animation-delay:${1.4+i*.09}s">${c}</span>`));const cs=['#22c55e','#7c3aed','#f59e0b','#0ea5e9','#ef4444','#fff'],sp=$('#sp');for(let i=0;i<32;i++){const an=i/32*6.283,d=110+Math.random()*140,z=6+Math.random()*9;sp.insertAdjacentHTML('beforeend',`<b style="--x:${Math.cos(an)*d}px;--y:${Math.sin(an)*d}px;background:${cs[i%6]};animation-delay:${.85+Math.random()*.25}s;width:${z}px;height:${z}px"></b>`)}setTimeout(()=>$('#splash').classList.add('ent-on'),2800)})();
+render();
+</script>
+</body>
+</html>
